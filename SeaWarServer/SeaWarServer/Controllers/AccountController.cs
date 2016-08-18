@@ -16,48 +16,48 @@ namespace SeaWarServer.Controllers
         public DataBaseContext dbContext = new DataBaseContext();
         
         [HttpPost]
-        public string Register(LoginDTO data)
+        public IHttpActionResult Register(LoginDTO data)
         {
             try
             {
                 User tempUser = new User(data.Name, data.Password);
                 dbContext.Users.Add(tempUser);
                 dbContext.SaveChanges();
-                return tempUser.Id;
+                return Ok(tempUser.Id);
             }
             catch (Exception)
             {
-                return Messages.WrongRequest;
+                return  BadRequest(Messages.WrongRequest);
             }
         }
 
         [HttpGet]
-        public User GetUser(string Id)
+        public IHttpActionResult GetUser(string Id)
         {
             var tempUser = dbContext.Users.FirstOrDefault(user => user.Id == Id);
-            return tempUser;
+            return Ok(tempUser);
         }
 
         [HttpPost]
-        public string SetRole(SetRoleDTO data)
+        public IHttpActionResult SetRole(SetRoleDTO data)
         {
             try
             {
                 User tempUser = dbContext.Users.FirstOrDefault(user => user.Id == data.PlayerId);
                 if (tempUser == null)
                 {
-                    return Messages.UserNotFound;
+                    return NotFound();
                 }
                 else
                 {
                     int role = data.Role;
                     if (tempUser.Role != 0)
                     {
-                        return "Not possible";
+                        return BadRequest("Not possible");
                     }
                     else
                     {
-                        string result = "";
+                        IHttpActionResult result; 
                         switch (role)
                         {
                             case 1:
@@ -65,14 +65,14 @@ namespace SeaWarServer.Controllers
                                 var tempShip = Statics.ShipList.First(s => s.Name == "Log");
                                 tempShip.Id = Guid.NewGuid().ToString();
                                 tempUser.Ships.Add(tempShip);
-                                result = Messages.Success;
+                                result = Ok(Messages.Success);
                                 break;
                             case 2:
 
-                                result = "not yet";
+                                result = BadRequest("not yet");
                                 break;
                             default:
-                                result = "This role is missing";
+                                result = BadRequest("This role is missing");
                                 break;
                         }
                         dbContext.SaveChanges();
@@ -82,15 +82,22 @@ namespace SeaWarServer.Controllers
             }
             catch (Exception e)
             {
-                return Messages.WrongRequest;
+                return InternalServerError(e);
             }
         }
 
         [HttpPost]
-        public string Login(LoginDTO data)
+        public IHttpActionResult Login(LoginDTO data)
         {
             var tempUser = dbContext.Users.FirstOrDefault(U => U.Name == data.Name && U.Password == data.Password);
-            return tempUser?.Id ?? Messages.UserNotFound;
+            if(tempUser==null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(tempUser.Id);
+            }
         }
 
     }

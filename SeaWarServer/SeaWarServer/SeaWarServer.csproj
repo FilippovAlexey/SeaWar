@@ -216,7 +216,7 @@
     <Compile Include="DTO\SessionCreateDTO.cs" />
     <Compile Include="DTO\SessionJoinDTO.cs" />
     <Compile Include="DTO\SetRoleDTO.cs" />
-    <Compile Include="Errors.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

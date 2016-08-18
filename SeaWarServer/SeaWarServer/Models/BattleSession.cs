@@ -44,14 +44,15 @@ namespace SeaWarServer.Models
         {
             get
             {
-                return TimeLeft;
+                return timeLeft;
             }
-            set
+            private set
             {
                 timeLeft = value;
                 if (timeLeft <= 0)
                 {
                     TurnEnded(this, null);
+                    timer.Stop();
                 }
             }
         }
@@ -82,7 +83,7 @@ namespace SeaWarServer.Models
         private void BattleSessionOnGameStarted(object sender, EventArgs e)
         {
             this.TimeLeft = 60;
-            this.timer.Interval = 60;
+            this.timer.Interval = 1;
             this.timer.Start();
         }
 

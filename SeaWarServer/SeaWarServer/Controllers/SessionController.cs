@@ -9,7 +9,6 @@ using System.Web.Http;
 
 namespace SeaWarServer.Controllers
 {
-    //TODO:naher perepisat' vsyo^&
     public class SessionController : ApiController
     {
         [HttpPost]
@@ -46,7 +45,13 @@ namespace SeaWarServer.Controllers
             if (tempSession == null)
                 return BadRequest(Messages.UserNotFound);
             else
-                return Ok(new { Id=tempSession.Id, PlayerId=tempSession.PlayerId});
+                return Ok(new { Id=tempSession.Id, State=tempSession.State});
+        }
+
+        [HttpPost]
+        public IHttpActionResult SelectShip()
+        {
+
         }
 
     }
