@@ -1,22 +1,19 @@
 ﻿using SeaWarServer.DTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Timers;
-using System.Web;
 
 namespace SeaWarServer.Models
 {
     public class BattleSession
     {
-        private string playerId;
+        private PlayerInBattle playerId;
         private double timeLeft;
         private Timer timer;
         private GameState state;
         public string Id { get; set; }
         public string GameName { get; set; }
-        public string HostId { get; set; }
-        public string PlayerId
+        public PlayerInBattle Host { get; set; }
+        public PlayerInBattle Player
         {
             get
             {
@@ -52,7 +49,6 @@ namespace SeaWarServer.Models
                 if (timeLeft <= 0)
                 {
                     TurnEnded(this, null);
-                    timer.Stop();
                 }
             }
         }
@@ -61,18 +57,32 @@ namespace SeaWarServer.Models
         public BattleSession(SessionCreateDTO data)
         {
             this.Id = Guid.NewGuid().ToString();
-            this.HostId = data.HostId;
+            this.Host = new PlayerInBattle() { Id = data.HostId };
             this.GameName = data.GameName;
             this.State = GameState.NotStarted;
             this.timer = new Timer();
             this.GameStarted += BattleSessionOnGameStarted;
             this.timer.Elapsed += TimerOnElapsed;
             this.TurnEnded += BattleSessionOnTurnEnded;
+            this.Host.ReadyChanged += UserOnReadyChanged;
+            this.Player.ReadyChanged += UserOnReadyChanged;
         }
 
+        private void UserOnReadyChanged(object sender, EventArgs e)
+        {
+            if(Player.Ready&&Host.Ready)
+            {
+                BattleSessionOnTurnEnded(this, null);
+                Player.Ready = false;
+                Host.Ready = false;
+            }
+        }
+
+        //TODO:
         private void BattleSessionOnTurnEnded(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.timer.Stop();
+
         }
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)

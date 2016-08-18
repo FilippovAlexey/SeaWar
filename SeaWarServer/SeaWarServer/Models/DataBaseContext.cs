@@ -1,9 +1,5 @@
 ﻿using SeaWarServer.NonProject;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace SeaWarServer.Models
 {
