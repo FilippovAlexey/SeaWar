@@ -1,0 +1,194 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Api</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>SeaWar server API</h2>
+        <p>Стучать сюда: http://0temka4.somee.com/api/  + см. ниже. Кругом передаем Json. Пример:
+         http://0temka4.somee.com/api/account/register  стучим методом POST, кругом ContentType = "application/json",
+         в теле передаем так {"Name":"Тут имя", "Password":"Тут пароль"}. Возвращает в response UserId. Описание разворачивается.
+        Пример нумбер ту:  http://0temka4.somee.com/api/account/getuser/bcc64ccf-8b9c-4f05-9bfa-666c034d6bd7  метод GET,
+        в теле ничего не передаем, в конце урла дописываем Id юзера, приходит Json с его инфой</p>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">POST account/register  string(string Name, string Password) </a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                    <div class="panel-body">
+                       Косая-кривая регистрация, ничего необычного.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">GET account/getuser/{userId} User()</a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Даешь Id, получаешь почти всю инфу о юзере, изи=)
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">POST account/setrole string(string PlayerId, int Role)</a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        У юзера есть роли, и иму нужно ее выбрать вначале, пока реализовано только без роли(0)и пират(1).Вернет результат.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">POST account/login string(string Name, string Password)</a>
+                    </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Авториация. Возвращает Id пользователя.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">POST session/create BattleSession(string GameName, string HostId)</a>
+                    </h4>
+                </div>
+                <div id="collapse5" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Создание сесии для боя, возвращает объект сессию.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">GET session/list List[BattleSession]()</a>
+                    </h4>
+                </div>
+                <div id="collapse6" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Возвращает список игровых сессий.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">POST session/join BattleSession(string Id, string PlayerId)</a>
+                    </h4>
+                </div>
+                <div id="collapse7" class="panel-collapse collapse">
+                    <div class="panel-body">
+                       Присоединение к сессии.Передаем Id сессии и Id текущего игрока.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse8">GET session/info/{sessionId} BattleSession()</a>
+                    </h4>
+                </div>
+                <div id="collapse8" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Возвращает ид сессии и ид подключившегося игрока...ну или его отсутствие.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">Collapsible Group 3</a>
+                    </h4>
+                </div>
+                <div id="collapse9" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">Collapsible Group 3</a>
+                    </h4>
+                </div>
+                <div id="collapse10" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">Collapsible Group 3</a>
+                    </h4>
+                </div>
+                <div id="collapse11" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse12">Collapsible Group 3</a>
+                    </h4>
+                </div>
+                <div id="collapse12" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse13">Collapsible Group 3</a>
+                    </h4>
+                </div>
+                <div id="collapse13" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

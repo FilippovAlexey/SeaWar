@@ -1,0 +1,69 @@
+﻿@model IEnumerable<SeaWarServer.Models.User>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+    <table>
+        <tr>
+            <th>
+                @Html.ActionLink("To API", "Api")
+            </th>
+            <th>
+                <a href="/Book/index">To Book</a>
+            </th>
+            </tr>
+           </table>
+    <p></p>
+    <p></p>
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Role)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Ships)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role)
+                        </td>
+                        <td>
+                            @foreach (var itm in item.Ships)
+                            {
+                                <p>@Html.DisplayFor(modelItem => itm.Name)  </p>
+                            }
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+</body>
+</html>
