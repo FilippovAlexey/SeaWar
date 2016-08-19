@@ -217,6 +217,7 @@
     <Compile Include="DTO\SessionJoinDTO.cs" />
     <Compile Include="DTO\SetRoleDTO.cs" />
     <Compile Include="DTO\ShipListDTO.cs" />
+    <Compile Include="DTO\TurnDataDTO.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -250,6 +251,7 @@
     <Compile Include="Models\DataBaseContext.cs" />
     <Compile Include="Models\PlayerInBattle.cs" />
     <Compile Include="Models\Ship.cs" />
+    <Compile Include="Models\ShipInBattle.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="NonProject\BookItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,10 +15,14 @@ namespace SeaWarServer.Controllers
         {
             try
             {
+                if(data.Name==""||data.Password=="")
+                {
+                    return this.BadRequest("Values must not be empty");
+                }
                 User tempUser = new User(data.Name, data.Password);
                 dbContext.Users.Add(tempUser);
                 dbContext.SaveChanges();
-                return Ok(tempUser.Id);
+                return this.Ok(tempUser.Id);
             }
             catch (Exception)
             {
@@ -57,7 +61,7 @@ namespace SeaWarServer.Controllers
                         {
                             case 1:
                                 tempUser.Role = Models.User.RoleEnum.Pirate;
-                                var tempShip = Statics.ShipList.First(s => s.Name == "Log");
+                                var tempShip = Statics.ShipList.First(s => s.Name == "Washtub");
                                 tempShip.Id = Guid.NewGuid().ToString();
                                 tempUser.Ships.Add(tempShip);
                                 result = Ok(Messages.Success);

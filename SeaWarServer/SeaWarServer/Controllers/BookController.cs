@@ -12,6 +12,7 @@ namespace SeaWarServer.Controllers
         public ActionResult Index()
         {
             var result = dbContext.Book.ToList();
+            result.Reverse();
             return View(result);
         }
 
@@ -20,7 +21,7 @@ namespace SeaWarServer.Controllers
         {
             dbContext.Book.Add(new BookItem() { Autor = Author, Message = Message });
             dbContext.SaveChanges();
-            var result = dbContext.Book.ToList();
+            var result = dbContext.Book.Reverse().ToList();
             return View(result);
         }
     }

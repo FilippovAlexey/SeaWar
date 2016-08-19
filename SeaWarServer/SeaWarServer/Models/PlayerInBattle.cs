@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SeaWarServer.Models
 {
@@ -16,11 +17,21 @@ namespace SeaWarServer.Models
             set
             {
                 ready = value;
-                ReadyChanged(this, null);
+                if (ready)
+                {
+                    ReadyChanged(this, null);
+                }
             }
         }
-        public List<Ship> ShipList { get; set; }
+        public List<ShipInBattle> ShipList { get; set; }
 
-        public event EventHandler ReadyChanged;
+        //TODO:do something with it!
+        internal void AutoAddShips()
+        {
+            DataBaseContext dbContext = new DataBaseContext();
+            this.ShipList.AddRange(dbContext.Users.First(u => u.Id == this.Id).Ships.Take(5) as List<ShipInBattle>);
+        }
+
+        public event EventHandler ReadyChanged; 
     }
 }

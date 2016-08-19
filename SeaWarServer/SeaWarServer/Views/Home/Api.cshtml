@@ -21,7 +21,7 @@
          в теле передаем так {"Name":"Тут имя", "Password":"Тут пароль"}. Возвращает в response UserId. Описание разворачивается.
         Пример нумбер ту:  http://0temka4.somee.com/api/account/getuser/bcc64ccf-8b9c-4f05-9bfa-666c034d6bd7  метод GET,
         в теле ничего не передаем, в конце урла дописываем Id юзера, приходит Json с его инфой</p>
-        <p>Source code you can see in https://github.com/FilippovAlexey/SeaWar</p>
+        <p>Source code you can get </p><a href="https://github.com/FilippovAlexey/SeaWar">here</a><p>.</p>
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -86,7 +86,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">GET session/list List[BattleSession]()</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">GET session/list BattleSession[]()</a>
                     </h4>
                 </div>
                 <div id="collapse6" class="panel-collapse collapse">
@@ -122,28 +122,24 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">Collapsible Group 3</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">GET session/gettimeleft/{sessionId} double()</a>
                     </h4>
                 </div>
                 <div id="collapse9" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Возвращает время, оставшееся до конца хода.
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">Collapsible Group 3</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">POST session/selectships ShipInBattle[](string UserId, string SessionId, string[] ShipList)</a>
                     </h4>
                 </div>
                 <div id="collapse10" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Выбор кораблей. Передаем массив Id выбранных кораблей max 5.Возвращает список выбранных кораблей.
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 ﻿using SeaWarServer.DTO;
 using System;
+using System.Linq;
 using System.Timers;
 
 namespace SeaWarServer.Models
@@ -10,6 +11,7 @@ namespace SeaWarServer.Models
         private double timeLeft;
         private Timer timer;
         private GameState state;
+        private double roundTime = 60;
         public string Id { get; set; }
         public string GameName { get; set; }
         public PlayerInBattle Host { get; set; }
@@ -34,7 +36,10 @@ namespace SeaWarServer.Models
             set
             {
                 state = value;
-                GameStarted(this, null);
+                if (state == GameState.Started)
+                {
+                    GameStarted(this, null);
+                }
             }
         }
         public double TimeLeft
@@ -70,20 +75,41 @@ namespace SeaWarServer.Models
 
         private void UserOnReadyChanged(object sender, EventArgs e)
         {
-            if(Player.Ready&&Host.Ready)
+            if (Player.Ready && Host.Ready)
             {
                 BattleSessionOnTurnEnded(this, null);
-                Player.Ready = false;
-                Host.Ready = false;
             }
         }
 
         //TODO:
         private void BattleSessionOnTurnEnded(object sender, EventArgs e)
         {
+            
             this.timer.Stop();
+            if (this.State != GameState.ShipsSelected)
+            {
+               
+                if (!this.Host.Ready)
+                {
+                    this.Host.AutoAddShips();
+                }
+                else if(!this.Player.Ready)
+                {
+                    this.Player.AutoAddShips();
+                }
+                this.Player.Ready = false;
+                this.Host.Ready = false;
+                this.State = GameState.ShipsSelected;
+                this.timer.Interval = this.roundTime;
+                this.timer.Start();
+            }
+            else if (this.State == GameState.ShipsSelected)
+            {
+
+            }
 
         }
+        
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
@@ -100,6 +126,6 @@ namespace SeaWarServer.Models
         private event EventHandler GameStarted;
         private event EventHandler TurnEnded;
 
-        public enum GameState { NotStarted, Started }
+        public enum GameState { NotStarted, Started, ShipsSelected }
     }
 }
