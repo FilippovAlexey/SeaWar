@@ -15,8 +15,9 @@ namespace SeaWarServer.Controllers
         {
             if (dbContext.Users.FirstOrDefault(u => u.Id == data.HostId) != null)
             {
-                Statics.BattleSessionList.Add(new BattleSession(data));
-                return this.Ok(data);
+                BattleSession tempBS = new BattleSession(data);
+                Statics.BattleSessionList.Add(tempBS);
+                return this.Ok(tempBS.Id);
             }
             else
             {

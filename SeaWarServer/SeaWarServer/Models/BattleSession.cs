@@ -8,7 +8,7 @@ namespace SeaWarServer.Models
 {
     public class BattleSession
     {
-        private PlayerInBattle playerId;
+        private PlayerInBattle player;
         private double timeLeft;
         private Timer timer;
         private GameState state;
@@ -23,12 +23,16 @@ namespace SeaWarServer.Models
         {
             get
             {
-                return playerId;
+                return player;
             }
             set
             {
-                State = GameState.Started;
-                playerId = value;
+                player = value;
+                this.Player.ReadyChanged += UserOnReadyChanged;
+                if (player.Id != "" && player.Id != null)
+                {
+                    State = GameState.Started;
+                }
             }
         }
         public GameState State
@@ -42,6 +46,7 @@ namespace SeaWarServer.Models
                 state = value;
                 if (state == GameState.Started)
                 {
+                    if(GameStarted!=null)
                     GameStarted(this, null);
                 }
             }
@@ -72,11 +77,11 @@ namespace SeaWarServer.Models
             this.TurnNumber = 0;
             this.WinnerId = "";
             this.timer = new Timer();
+            this.Player = new PlayerInBattle();
             this.GameStarted += BattleSessionOnGameStarted;
             this.timer.Elapsed += TimerOnElapsed;
             this.TurnEnded += BattleSessionOnTurnEnded;
             this.Host.ReadyChanged += UserOnReadyChanged;
-            this.Player.ReadyChanged += UserOnReadyChanged;
         }
 
         private void UserOnReadyChanged(object sender, EventArgs e)
