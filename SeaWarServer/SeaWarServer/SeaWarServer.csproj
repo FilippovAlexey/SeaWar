@@ -212,6 +212,7 @@
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="DTO\LoginDTO.cs" />
     <Compile Include="DTO\SessionCreateDTO.cs" />
     <Compile Include="DTO\SessionJoinDTO.cs" />
@@ -246,12 +247,25 @@
     <Compile Include="Migrations\201608172341503_book.Designer.cs">
       <DependentUpon>201608172341503_book.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608191925527_wtf1.cs" />
+    <Compile Include="Migrations\201608191925527_wtf1.Designer.cs">
+      <DependentUpon>201608191925527_wtf1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608200008313_wtf2.cs" />
+    <Compile Include="Migrations\201608200008313_wtf2.Designer.cs">
+      <DependentUpon>201608200008313_wtf2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608201548582_test1.cs" />
+    <Compile Include="Migrations\201608201548582_test1.Designer.cs">
+      <DependentUpon>201608201548582_test1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BattleSession.cs" />
     <Compile Include="Models\DataBaseContext.cs" />
     <Compile Include="Models\PlayerInBattle.cs" />
     <Compile Include="Models\Ship.cs" />
     <Compile Include="Models\ShipInBattle.cs" />
+    <Compile Include="Models\TurnData.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="NonProject\BookItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -278,6 +292,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608172341503_book.resx">
       <DependentUpon>201608172341503_book.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608191925527_wtf1.resx">
+      <DependentUpon>201608191925527_wtf1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608200008313_wtf2.resx">
+      <DependentUpon>201608200008313_wtf2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608201548582_test1.resx">
+      <DependentUpon>201608201548582_test1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -21,17 +21,18 @@
          в теле передаем так {"Name":"Тут имя", "Password":"Тут пароль"}. Возвращает в response UserId. Описание разворачивается.
         Пример нумбер ту:  http://0temka4.somee.com/api/account/getuser/bcc64ccf-8b9c-4f05-9bfa-666c034d6bd7  метод GET,
         в теле ничего не передаем, в конце урла дописываем Id юзера, приходит Json с его инфой</p>
-        <p>Source code you can get </p><a href="https://github.com/FilippovAlexey/SeaWar">here</a><p>.</p>
+        <div class="form-horizontal"><p>Source code you can get </p><a href="https://github.com/FilippovAlexey/SeaWar">here</a><p>.</p></div>
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">POST account/register  string(string Name, string Password) </a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">POST account/register  string(string Name, string Password)  ERRORS: NotEmpty</a>
                     </h4>
                 </div>
                 <div id="collapse1" class="panel-collapse collapse">
                     <div class="panel-body">
                        Косая-кривая регистрация, ничего необычного.
+                        NotEmpty при отправке пустых строк.
                     </div>
                 </div>
             </div>
@@ -50,19 +51,19 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">POST account/setrole string(string PlayerId, int Role)</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">POST account/setrole string(SetRoleDTO) ERRORS: UserNotFound, NotPos, RoleMissing</a>
                     </h4>
                 </div>
                 <div id="collapse3" class="panel-collapse collapse">
                     <div class="panel-body">
-                        У юзера есть роли, и иму нужно ее выбрать вначале, пока реализовано только без роли(0)и пират(1).Вернет результат.
+                        У юзера есть роли, и иму нужно ее выбрать вначале, пока реализовано только без роли(0)и пират(1).Вернет результат(либо ошибку либо Success).
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">POST account/login string(string Name, string Password)</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">POST account/login string(string Name, string Password) ERRORS: BadData</a>
                     </h4>
                 </div>
                 <div id="collapse4" class="panel-collapse collapse">
@@ -74,12 +75,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">POST session/create BattleSession(string GameName, string HostId)</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">POST session/create BattleSession(SessionCreateDTO) ERRORS: UserNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse5" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Создание сесии для боя, возвращает объект сессию.
+                        Создание сесии для боя, возвращает объект-сессию.
                     </div>
                 </div>
             </div>
@@ -98,7 +99,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">POST session/join BattleSession(string Id, string PlayerId)</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">POST session/join BattleSession(SessionJoinDTO) ERRORS: SessionNotFound, UserNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse7" class="panel-collapse collapse">
@@ -110,19 +111,19 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse8">GET session/info/{sessionId} BattleSession()</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse8">GET session/info/{sessionId} BattleSession() ERRORS: SessionNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse8" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Возвращает ид сессии и ид подключившегося игрока...ну или его отсутствие.
+                        Возвращает ид сессии и ид подключившегося игрока...ну или его отсутствие а также состояние сессии.
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">GET session/gettimeleft/{sessionId} double()</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">GET session/gettimeleft/{sessionId} double() ERRORS: SessionNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse9" class="panel-collapse collapse">
@@ -134,54 +135,48 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">POST session/selectships ShipInBattle[](string UserId, string SessionId, string[] ShipList)</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">POST session/selectships ShipInBattle[](ShipListDTO) ERRORS: SessionNotFound, UserNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse10" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Выбор кораблей. Передаем массив Id выбранных кораблей max 5.Возвращает список выбранных кораблей.
+                        Выбор кораблей. Возвращает список выбранных кораблей.
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">Collapsible Group 3</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">POST session/endturn string(TurnDataDTO) ERRORS: SessionNotFound, UserNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse11" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Завершение хода. Возвращает Success или ошибку. 
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse12">Collapsible Group 3</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse12">GET session/getbattledata/{sessionId} BattleSession() ERRORS: SessionNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse12" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Возвращает всю инфу о сессии.Ну или ошибку.
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse13">Collapsible Group 3</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse13">GET system/getstringmessages []()</a>
                     </h4>
                 </div>
                 <div id="collapse13" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Возвращает список всех сообщении, возвращаемых из сервера в виде [Key="", Value=""].
                     </div>
                 </div>
             </div>

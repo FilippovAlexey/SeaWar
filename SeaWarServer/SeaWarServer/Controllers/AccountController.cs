@@ -9,25 +9,18 @@ namespace SeaWarServer.Controllers
     public class AccountController : ApiController
     {
         public DataBaseContext dbContext = new DataBaseContext();
-        
+
         [HttpPost]
         public IHttpActionResult Register(LoginDTO data)
         {
-            try
+            if (data.Name == "" || data.Password == "")
             {
-                if(data.Name==""||data.Password=="")
-                {
-                    return this.BadRequest("Values must not be empty");
-                }
-                User tempUser = new User(data.Name, data.Password);
-                dbContext.Users.Add(tempUser);
-                dbContext.SaveChanges();
-                return this.Ok(tempUser.Id);
+                return this.Ok(Messages.NotEmpty);
             }
-            catch (Exception)
-            {
-                return  BadRequest(Messages.WrongRequest);
-            }
+            User tempUser = new User(data.Name, data.Password);
+            dbContext.Users.Add(tempUser);
+            dbContext.SaveChanges();
+            return this.Ok(tempUser.Id);
         }
 
         [HttpGet]
@@ -45,33 +38,29 @@ namespace SeaWarServer.Controllers
                 User tempUser = dbContext.Users.FirstOrDefault(user => user.Id == data.PlayerId);
                 if (tempUser == null)
                 {
-                    return NotFound();
+                    return this.Ok(Messages.UserNotFound);
                 }
                 else
                 {
-                    int role = data.Role;
-                    if (tempUser.Role != 0)
+                    var role = data.Role;
+                    if (tempUser.Role != Models.User.RoleEnum.None)
                     {
-                        return BadRequest("Not possible");
+                        return this.Ok(Messages.NotPos);
                     }
                     else
                     {
-                        IHttpActionResult result; 
+                        IHttpActionResult result;
                         switch (role)
                         {
-                            case 1:
+                            case Models.User.RoleEnum.Pirate:
                                 tempUser.Role = Models.User.RoleEnum.Pirate;
                                 var tempShip = Statics.ShipList.First(s => s.Name == "Washtub");
                                 tempShip.Id = Guid.NewGuid().ToString();
                                 tempUser.Ships.Add(tempShip);
                                 result = Ok(Messages.Success);
                                 break;
-                            case 2:
-
-                                result = BadRequest("not yet");
-                                break;
                             default:
-                                result = BadRequest("This role is missing");
+                                result = this.Ok(Messages.RoleMissing);
                                 break;
                         }
                         dbContext.SaveChanges();
@@ -89,9 +78,9 @@ namespace SeaWarServer.Controllers
         public IHttpActionResult Login(LoginDTO data)
         {
             var tempUser = dbContext.Users.FirstOrDefault(U => U.Name == data.Name && U.Password == data.Password);
-            if(tempUser==null)
+            if (tempUser == null)
             {
-                return NotFound();
+                return this.Ok(Messages.BadData);
             }
             else
             {

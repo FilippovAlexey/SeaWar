@@ -7,6 +7,6 @@ namespace SeaWarServer.DTO
     {
         public string PlayerId { get; set; }
         public string SessionId { get; set; }
-        public List<ShipInBattle> MyProperty { get; set; }
+        public List<ShipInBattle> ShipList { get; set; }
     }
 }
