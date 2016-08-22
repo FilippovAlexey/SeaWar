@@ -80,7 +80,7 @@
                 </div>
                 <div id="collapse5" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Создание сесии для боя, возвращает объект-сессию.
+                        Создание сесии для боя, возвращает id сессии и состояние сессии.
                     </div>
                 </div>
             </div>
@@ -171,10 +171,22 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse13">GET system/getstringmessages []()</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse13">POST system/remove/ string(SessionCreateDTO) ERRORS: UserNotFound, SessionNotFound</a>
                     </h4>
                 </div>
                 <div id="collapse13" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Удаляет сессию.
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse14">GET system/getstringmessages []()</a>
+                    </h4>
+                </div>
+                <div id="collapse14" class="panel-collapse collapse">
                     <div class="panel-body">
                         Возвращает список всех сообщении, возвращаемых из сервера в виде [Key="", Value=""].
                     </div>
