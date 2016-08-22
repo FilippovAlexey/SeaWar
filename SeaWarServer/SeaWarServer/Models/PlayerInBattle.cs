@@ -29,7 +29,9 @@ namespace SeaWarServer.Models
         internal void AutoAddShips()
         {
             DataBaseContext dbContext = new DataBaseContext();
-            this.ShipList.AddRange(dbContext.Users.First(u => u.Id == this.Id).Ships.Take(5) as List<ShipInBattle>);
+            List<ShipInBattle> sl = dbContext.Users.First(u => u.Id == this.Id).Ships.Take(5).Select(a=>new ShipInBattle(a)).ToList();
+            this.ShipList = new List<ShipInBattle>();
+            this.ShipList.AddRange(sl);
         }
 
         public event EventHandler ReadyChanged; 

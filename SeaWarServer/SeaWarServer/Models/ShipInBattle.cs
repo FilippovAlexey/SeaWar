@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace SeaWarServer.Models
 {
-    public class ShipInBattle : Ship,IComparer, IComparable
+    [NotMapped]
+    public class ShipInBattle : Ship
     {
         public int TargetPosition { get; set; }
         public ShipAction Action { get; set; }
@@ -14,26 +16,20 @@ namespace SeaWarServer.Models
         public enum ShipAction { Nothing, Attack }
         public enum BattleOwner { Host, Player}
 
+        public ShipInBattle(Ship ship)
+        {
+            this.Damage = ship.Damage;
+            this.Health = ship.Health;
+            this.Id = ship.Id;
+            this.Name = ship.Name;
+            this.Speed = ship.Speed;
+        }
+
         public void Restore()
         {
             this.Action = ShipAction.Nothing;
             this.TargetPosition = 0;
         }
-        public int Compare(object x, object y)
-        {
-            var X = (ShipInBattle)x;
-            var Y = (ShipInBattle)y;
-            if (X.Speed > Y.Speed)
-                return 1;
-            else if (X.Speed < Y.Speed)
-                return -1;
-            else return 0;
-        }
-
-        public int CompareTo(object obj)
-        {
-            var ship = (ShipInBattle)obj;
-            return Compare(this, ship);
-        }
+       
     }
 }

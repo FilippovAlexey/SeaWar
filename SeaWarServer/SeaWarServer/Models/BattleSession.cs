@@ -12,7 +12,7 @@ namespace SeaWarServer.Models
         private double timeLeft;
         private Timer timer;
         private GameState state;
-        private double roundTime = 60;
+        private double roundTime = 10;
         public string Id { get; set; }
         public string GameName { get; set; }
         public PlayerInBattle Host { get; set; }
@@ -78,6 +78,7 @@ namespace SeaWarServer.Models
             this.WinnerId = "";
             this.timer = new Timer();
             this.Player = new PlayerInBattle();
+            this.DataOfTurn = new List<TurnData>();
             this.GameStarted += BattleSessionOnGameStarted;
             this.timer.Elapsed += TimerOnElapsed;
             this.TurnEnded += BattleSessionOnTurnEnded;
@@ -104,7 +105,7 @@ namespace SeaWarServer.Models
                 {
                     this.Host.AutoAddShips();
                 }
-                else if (!this.Player.Ready)
+                if (!this.Player.Ready)
                 {
                     this.Player.AutoAddShips();
                 }
@@ -129,7 +130,7 @@ namespace SeaWarServer.Models
                 {
                     battleQuiue.AddRange(this.Host.ShipList);
                     battleQuiue.AddRange(this.Player.ShipList);
-                    battleQuiue.Sort();
+                    battleQuiue.OrderByDescending(s=>s.Speed);
                     foreach (var ship in battleQuiue)
                     {
                         switch (ship.Action)
@@ -209,7 +210,7 @@ namespace SeaWarServer.Models
         private void BattleSessionOnGameStarted(object sender, EventArgs e)
         {
             this.TimeLeft = this.roundTime;
-            this.timer.Interval = 1;
+            this.timer.Interval = 1000;
             this.timer.Start();
         }
 

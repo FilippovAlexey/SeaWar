@@ -13,21 +13,50 @@ namespace SeaWarServer.Controllers
         [HttpPost]
         public IHttpActionResult Create(SessionCreateDTO data)
         {
-            if (dbContext.Users.FirstOrDefault(u => u.Id == data.HostId) != null)
-            {
-                BattleSession tempBS = new BattleSession(data);
-                Statics.BattleSessionList.Add(tempBS);
-                return this.Ok(tempBS.Id);
-            }
-            else
+            if (dbContext.Users.FirstOrDefault(u => u.Id == data.HostId) == null)
             {
                 return this.Ok(Messages.UserNotFound);
             }
+            else
+            {
+                if (Statics.BattleSessionList.FirstOrDefault(bs => bs.Host.Id == data.HostId) != null)
+                {
+                    return this.Ok(Messages.AlreadyCreated);
+                }
+                else
+                {
+                    BattleSession tempBS = new BattleSession(data);
+                    Statics.BattleSessionList.Add(tempBS);
+                    return this.Ok(tempBS.Id);
+                }
+            }
+
         }
         [HttpGet]
         public IHttpActionResult List()
         {
-            return this.Ok(Statics.BattleSessionList.Select(a => new { Id = a.Id, GameName = a.GameName, Host = a.Host.Id }).ToList());
+            return this.Ok(Statics.BattleSessionList.Where(s => s.State == BattleSession.GameState.NotStarted).Select(a => new { Id = a.Id, GameName = a.GameName, Host = a.Host.Id }).ToList());
+        }
+
+        public IHttpActionResult Remove(SessionJoinDTO data)
+        {
+            if (dbContext.Users.FirstOrDefault(u => u.Id == data.PlayerId) == null)
+            {
+                return this.Ok(Messages.UserNotFound);
+            }
+            else
+            {
+                var tempSession = Statics.BattleSessionList.FirstOrDefault(s => s.Id == data.Id && s.Host.Id == data.PlayerId);
+                if (tempSession == null)
+                {
+                    return this.Ok(Messages.SessionNotFound);
+                }
+                else
+                {
+                    Statics.BattleSessionList.Remove(tempSession);
+                    return this.Ok(Messages.Success);
+                }
+            }
         }
 
         [HttpPost]
@@ -40,10 +69,18 @@ namespace SeaWarServer.Controllers
             }
             else
             {
-                if (dbContext.Users.FirstOrDefault(u => u.Id == data.PlayerId) != null)
+                var tempUser = dbContext.Users.FirstOrDefault(u => u.Id == data.PlayerId);
+                if (tempUser != null)
                 {
-                    tempSession.Player.Id = data.PlayerId;
-                    return this.Ok(tempSession);
+                    if (tempSession.State != BattleSession.GameState.NotStarted)
+                    {
+                        return this.Ok(Messages.AlreadyStarted);
+                    }
+                    else
+                    {
+                        tempSession.Player = new PlayerInBattle() { Id = tempUser.Id };
+                        return this.Ok(tempSession);
+                    }
                 }
                 else
                 {
@@ -60,7 +97,7 @@ namespace SeaWarServer.Controllers
                 return this.Ok(Messages.SessionNotFound);
             else
             {
-                return this.Ok(new { HostId = tempSession.Host.Id, State = tempSession.State });
+                return this.Ok(new { PlayerId = tempSession.Player.Id, State = tempSession.State });
             }
 
         }

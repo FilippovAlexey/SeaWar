@@ -259,6 +259,10 @@
     <Compile Include="Migrations\201608201548582_test1.Designer.cs">
       <DependentUpon>201608201548582_test1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608220520365_wtf3.cs" />
+    <Compile Include="Migrations\201608220520365_wtf3.Designer.cs">
+      <DependentUpon>201608220520365_wtf3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BattleSession.cs" />
     <Compile Include="Models\DataBaseContext.cs" />
@@ -301,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608201548582_test1.resx">
       <DependentUpon>201608201548582_test1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608220520365_wtf3.resx">
+      <DependentUpon>201608220520365_wtf3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

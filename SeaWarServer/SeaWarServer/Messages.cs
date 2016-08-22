@@ -15,6 +15,8 @@ namespace SeaWarServer
         public const string RoleMissing = "This role is missing";
         public const string SessionNotFound = "Session not found";
         public const string AlreadyTurns = "Turn already ";
+        public const string AlreadyCreated = "Game already created";
+        public const string AlreadyStarted = "Game already started";
 
         public static FieldInfo[] GetStrings()
         {
