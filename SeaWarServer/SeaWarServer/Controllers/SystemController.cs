@@ -12,7 +12,7 @@ namespace SeaWarServer.Controllers
         [HttpGet]
         public IHttpActionResult GetStringMessages()
         {
-            return this.Ok(Messages.GetStrings().Select(a=>new { Key=a.Name, Value=a.GetValue(a)}));
+            return this.Ok(Messages.GetStrings());
         }
     }
 }

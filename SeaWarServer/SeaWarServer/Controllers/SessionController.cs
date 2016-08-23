@@ -38,6 +38,7 @@ namespace SeaWarServer.Controllers
             return this.Ok(Statics.BattleSessionList.Where(s => s.State == BattleSession.GameState.NotStarted).Select(a => new { Id = a.Id, GameName = a.GameName, Host = a.Host.Id }).ToList());
         }
 
+        [HttpPost]
         public IHttpActionResult Remove(SessionJoinDTO data)
         {
             if (dbContext.Users.FirstOrDefault(u => u.Id == data.PlayerId) == null)

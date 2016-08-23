@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace SeaWarServer
@@ -18,11 +19,16 @@ namespace SeaWarServer
         public const string AlreadyCreated = "Game already created";
         public const string AlreadyStarted = "Game already started";
 
-        public static FieldInfo[] GetStrings()
+        public static Dictionary<string, string> GetStrings()
         {
             Type t = typeof(Messages);
-            var a = t.GetFields();
-            return a;
+            var fields = t.GetFields();
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach (var a in fields)
+            {
+                result.Add(a.Name, (string)a.GetValue(a));
+            }
+            return result;
         }
     }
 }
