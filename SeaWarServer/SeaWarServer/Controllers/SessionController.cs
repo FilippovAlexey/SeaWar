@@ -120,24 +120,31 @@ namespace SeaWarServer.Controllers
         [HttpPost]
         public IHttpActionResult SelectShips(ShipListDTO data)
         {
-            var tempSession = Statics.BattleSessionList.FirstOrDefault(s => s.Id == data.SessionId);
-            if (tempSession == null)
+            if (dbContext.Users.FirstOrDefault(u => u.Id == data.UserId) == null)
             {
-                return this.Ok(Messages.SessionNotFound);
+                return this.Ok(Messages.UserNotFound);
             }
             else
             {
-                if (tempSession.Host.Id == data.UserId)
+                var tempSession = Statics.BattleSessionList.FirstOrDefault(s => s.Id == data.SessionId);
+                if (tempSession == null)
                 {
-                    return SetSetShipsData(tempSession.Host, data);
-                }
-                else if (tempSession.Player.Id == data.UserId)
-                {
-                    return SetSetShipsData(tempSession.Player, data);
+                    return this.Ok(Messages.SessionNotFound);
                 }
                 else
                 {
-                    return this.Ok(Messages.UserNotFound);
+                    if (tempSession.Host.Id == data.UserId)
+                    {
+                        return SetSetShipsData(tempSession.Host, data);
+                    }
+                    else if (tempSession.Player.Id == data.UserId)
+                    {
+                        return SetSetShipsData(tempSession.Player, data);
+                    }
+                    else
+                    {
+                        return this.Ok(Messages.UserNotFound);
+                    }
                 }
             }
         }

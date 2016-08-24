@@ -263,6 +263,14 @@
     <Compile Include="Migrations\201608220520365_wtf3.Designer.cs">
       <DependentUpon>201608220520365_wtf3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608232218097_typeinship.cs" />
+    <Compile Include="Migrations\201608232218097_typeinship.Designer.cs">
+      <DependentUpon>201608232218097_typeinship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608241211402_shipnuserUpdate.cs" />
+    <Compile Include="Migrations\201608241211402_shipnuserUpdate.Designer.cs">
+      <DependentUpon>201608241211402_shipnuserUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BattleSession.cs" />
     <Compile Include="Models\DataBaseContext.cs" />
@@ -308,6 +316,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608220520365_wtf3.resx">
       <DependentUpon>201608220520365_wtf3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608232218097_typeinship.resx">
+      <DependentUpon>201608232218097_typeinship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608241211402_shipnuserUpdate.resx">
+      <DependentUpon>201608241211402_shipnuserUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

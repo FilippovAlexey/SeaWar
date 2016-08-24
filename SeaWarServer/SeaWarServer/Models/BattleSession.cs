@@ -98,7 +98,7 @@ namespace SeaWarServer.Models
         {
             this.TurnNumber++;
             this.timer.Stop();
-            if (this.State != GameState.ShipsSelected)
+            if (this.State == GameState.Started)
             {
 
                 if (!this.Host.Ready)

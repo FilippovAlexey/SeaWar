@@ -9,8 +9,9 @@ namespace SeaWarServer
         public static List<BattleSession> BattleSessionList = new List<BattleSession>();
         static Statics()
         {
-            ShipList.Add(new Ship() { Name = "Log", Health = 50, Damage = 12, Speed = 3 });
-            ShipList.Add(new Ship() { Name = "Washtub", Health = 42, Damage = 15, Speed = 4 });
+            ShipList.Add(new Ship() { Name = "Lugger", Type=Ship.ShipType.Lugger, Health = 60, Damage = 12, Speed = 3 ,HoldSize=80 });
+            ShipList.Add(new Ship() { Name = "Sloop", Type = Ship.ShipType.Sloop, Health = 40, Damage = 15, Speed = 4 , HoldSize = 50});
+            ShipList.Add(new Ship() { Name = "HeavySloop", Type = Ship.ShipType.HeavySloop, Health = 50, Damage = 15, Speed =3, HoldSize = 30 });
 
         }
     }

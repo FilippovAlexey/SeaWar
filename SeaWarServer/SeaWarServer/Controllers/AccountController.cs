@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Web.Http;
 using SeaWarServer.DTO;
+using System.Net;
 
 namespace SeaWarServer.Controllers
 {
@@ -49,22 +50,9 @@ namespace SeaWarServer.Controllers
                     }
                     else
                     {
-                        IHttpActionResult result;
-                        switch (role)
-                        {
-                            case Models.User.RoleEnum.Pirate:
-                                tempUser.Role = Models.User.RoleEnum.Pirate;
-                                var tempShip = Statics.ShipList.First(s => s.Name == "Washtub");
-                                tempShip.Id = Guid.NewGuid().ToString();
-                                tempUser.Ships.Add(tempShip);
-                                result = Ok(Messages.Success);
-                                break;
-                            default:
-                                result = this.Ok(Messages.RoleMissing);
-                                break;
-                        }
+                        string result = tempUser.SetRole(data.Role);
                         dbContext.SaveChanges();
-                        return result;
+                        return this.Ok(result);
                     }
                 }
             }
