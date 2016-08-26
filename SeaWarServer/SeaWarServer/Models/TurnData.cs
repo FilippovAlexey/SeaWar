@@ -10,5 +10,6 @@ namespace SeaWarServer.Models
         public string ShipId { get; set; }
         public int TargetPosition { get; set; }
         public double Damage { get; set; }
+        public ShipInBattle.ShipAction Action { get; set; }
     }
 }

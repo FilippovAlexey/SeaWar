@@ -54,8 +54,15 @@ namespace SeaWarServer.Controllers
                 }
                 else
                 {
-                    Statics.BattleSessionList.Remove(tempSession);
-                    return this.Ok(Messages.Success);
+                    if (tempSession.State != BattleSession.GameState.NotStarted)
+                    {
+                        return this.Ok(Messages.AlreadyStarted);
+                    }
+                    else
+                    {
+                        Statics.BattleSessionList.Remove(tempSession);
+                        return this.Ok(Messages.Success);
+                    }
                 }
             }
         }
@@ -73,13 +80,17 @@ namespace SeaWarServer.Controllers
                 var tempUser = dbContext.Users.FirstOrDefault(u => u.Id == data.PlayerId);
                 if (tempUser != null)
                 {
-                    if (tempSession.State != BattleSession.GameState.NotStarted)
+                    if(tempSession.Host.Id==tempUser.Id)
+                    {
+                        return this.Ok(Messages.NotPos);
+                    }
+                    else if (tempSession.State != BattleSession.GameState.NotStarted)
                     {
                         return this.Ok(Messages.AlreadyStarted);
                     }
                     else
                     {
-                        tempSession.Player = new PlayerInBattle() { Id = tempUser.Id };
+                        tempSession.Player = new PlayerInBattle(tempUser.Id);
                         return this.Ok(tempSession);
                     }
                 }
@@ -98,6 +109,7 @@ namespace SeaWarServer.Controllers
                 return this.Ok(Messages.SessionNotFound);
             else
             {
+                tempSession.shouldRemove = false;
                 return this.Ok(new { PlayerId = tempSession.Player.Id, State = tempSession.State });
             }
 
@@ -161,10 +173,12 @@ namespace SeaWarServer.Controllers
             {
                 if (tempSession.Host.Id == data.PlayerId)
                 {
+                    tempSession.shouldRemove = false;
                     return SetTurnData(tempSession.Host, data, ShipInBattle.BattleOwner.Host);
                 }
                 else if (tempSession.Player.Id == data.PlayerId)
                 {
+                    tempSession.shouldRemove = false;
                     return SetTurnData(tempSession.Player, data, ShipInBattle.BattleOwner.Player);
                 }
                 else
@@ -175,7 +189,7 @@ namespace SeaWarServer.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetBttleData(string id)
+        public IHttpActionResult GetBattleData(string id)
         {
             var tempBattleSession = Statics.BattleSessionList.FirstOrDefault(bs => bs.Id == id);
             if (tempBattleSession == null)
@@ -198,12 +212,15 @@ namespace SeaWarServer.Controllers
             {
                 player.Ready = true;
                 //TODO: mb fix
-                for (int i = 0, j = 0; i < data.ShipList.Count || j < 5; i++, j++)
+                for (int i = 0, j = 0; i < data.ShipList.Count && j < 5; i++, j++)
                 {
                     var tempShip = dbContext.Users.FirstOrDefault(u => u.Id == data.UserId).Ships.FirstOrDefault(sh => sh.Id == data.ShipList[i]);
                     if (tempShip != null)
                     {
-                        player.ShipList.Add(tempShip as ShipInBattle);
+                        if (!player.ShipList.Contains(tempShip))
+                        {
+                            player.ShipList.Add(tempShip as ShipInBattle);
+                        }
                     }
                 }
                 return Ok(player.ShipList);

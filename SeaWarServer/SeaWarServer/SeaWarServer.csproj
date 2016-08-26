@@ -271,6 +271,10 @@
     <Compile Include="Migrations\201608241211402_shipnuserUpdate.Designer.cs">
       <DependentUpon>201608241211402_shipnuserUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608261849146_asdffgsd.cs" />
+    <Compile Include="Migrations\201608261849146_asdffgsd.Designer.cs">
+      <DependentUpon>201608261849146_asdffgsd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BattleSession.cs" />
     <Compile Include="Models\DataBaseContext.cs" />
@@ -322,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608241211402_shipnuserUpdate.resx">
       <DependentUpon>201608241211402_shipnuserUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608261849146_asdffgsd.resx">
+      <DependentUpon>201608261849146_asdffgsd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

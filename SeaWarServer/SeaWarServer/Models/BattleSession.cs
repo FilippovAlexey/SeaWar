@@ -9,10 +9,12 @@ namespace SeaWarServer.Models
     public class BattleSession
     {
         private PlayerInBattle player;
-        private double timeLeft;
+        private int timeLeft;
         private Timer timer;
         private GameState state;
-        private double roundTime = 10;
+        private int roundTime = 60;
+        private Timer removeTimer;
+        public bool shouldRemove;
         public string Id { get; set; }
         public string GameName { get; set; }
         public PlayerInBattle Host { get; set; }
@@ -51,7 +53,7 @@ namespace SeaWarServer.Models
                 }
             }
         }
-        public double TimeLeft
+        public int TimeLeft
         {
             get
             {
@@ -71,18 +73,35 @@ namespace SeaWarServer.Models
         public BattleSession(SessionCreateDTO data)
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Host = new PlayerInBattle() { Id = data.HostId };
+            this.Host = new PlayerInBattle(data.HostId);
             this.GameName = data.GameName;
             this.State = GameState.NotStarted;
             this.TurnNumber = 0;
             this.WinnerId = "";
             this.timer = new Timer();
-            this.Player = new PlayerInBattle();
+            this.Player = new PlayerInBattle("");
+            this.shouldRemove = true;
+            this.removeTimer = new Timer();
+            this.removeTimer.Interval = 90000;
+            this.removeTimer.Elapsed += RemoveTimerOnElapsed;
+            this.removeTimer.Start();
             this.DataOfTurn = new List<TurnData>();
             this.GameStarted += BattleSessionOnGameStarted;
             this.timer.Elapsed += TimerOnElapsed;
             this.TurnEnded += BattleSessionOnTurnEnded;
             this.Host.ReadyChanged += UserOnReadyChanged;
+        }
+
+        private void RemoveTimerOnElapsed(object sender, ElapsedEventArgs e)
+        {
+            if(this.shouldRemove)
+            {
+                Statics.BattleSessionList.Remove(this);
+            }
+            else
+            {
+                this.shouldRemove = true;
+            }
         }
 
         private void UserOnReadyChanged(object sender, EventArgs e)
@@ -130,7 +149,7 @@ namespace SeaWarServer.Models
                 {
                     battleQuiue.AddRange(this.Host.ShipList);
                     battleQuiue.AddRange(this.Player.ShipList);
-                    battleQuiue.OrderByDescending(s=>s.Speed);
+                    battleQuiue.OrderByDescending(a=>a.Action).ThenByDescending(s=>s.Speed);
                     foreach (var ship in battleQuiue)
                     {
                         switch (ship.Action)
@@ -142,9 +161,20 @@ namespace SeaWarServer.Models
                             case ShipInBattle.ShipAction.Attack:
                                 {
                                     TurnData tData = new TurnData();
+                                    tData.Action = ShipInBattle.ShipAction.Attack;
                                     tData.ShipId = ship.Id;
                                     tData.TargetPosition = ship.TargetPosition;
                                     tData.Damage = Attack(ship);
+                                    DataOfTurn.Add(tData);
+                                    ship.Restore();
+                                    break;
+                                }
+                            case ShipInBattle.ShipAction.Defend:
+                                {
+                                    TurnData tData = new TurnData();
+                                    tData.Action = ShipInBattle.ShipAction.Attack;
+                                    tData.ShipId = ship.Id;
+                                    Defend(ship);
                                     DataOfTurn.Add(tData);
                                     ship.Restore();
                                     break;
@@ -166,6 +196,11 @@ namespace SeaWarServer.Models
             this.timer.Start();
         }
 
+        private void Defend(ShipInBattle ship)
+        {
+            ship.coeff = 0.5;
+        }
+
         private void EndGame(PlayerInBattle player)
         {
             this.State = GameState.End;
@@ -184,7 +219,7 @@ namespace SeaWarServer.Models
                     {
                         double random = rnd.Next(Convert.ToInt32(ship.Damage * -25), Convert.ToInt32(ship.Damage * 25));
                         random /= 100;
-                        damage = ship.Damage + random;
+                        damage = (ship.Damage + random)* this.Player.ShipList[ship.TargetPosition].coeff;
                         this.Player.ShipList[ship.TargetPosition].Health -= damage;
                     }
                 }
@@ -194,7 +229,7 @@ namespace SeaWarServer.Models
                     {
                         double random = rnd.Next(Convert.ToInt32(ship.Damage * -25), Convert.ToInt32(ship.Damage * 25));
                         random /= 100;
-                        damage = ship.Damage + random;
+                        damage = (ship.Damage + random)*this.Host.ShipList[ship.TargetPosition].coeff;
                         this.Host.ShipList[ship.TargetPosition - 1].Health -= damage;
                     }
                 }

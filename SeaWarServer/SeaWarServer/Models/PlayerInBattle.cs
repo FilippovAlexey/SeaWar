@@ -6,7 +6,7 @@ namespace SeaWarServer.Models
 {
     public class PlayerInBattle
     {
-        private bool ready = false;
+        private bool ready;
         public string Id { get; set; }
         public bool Ready
         {
@@ -19,11 +19,18 @@ namespace SeaWarServer.Models
                 ready = value;
                 if (ready)
                 {
-                    ReadyChanged(this, null);
+                    ReadyChanged(this, EventArgs.Empty);
                 }
             }
         }
         public List<ShipInBattle> ShipList { get; set; }
+
+        public PlayerInBattle(string id)
+        {
+            this.Ready = false;
+            this.Id = id;
+            this.ShipList = new List<ShipInBattle>();
+        }
 
         //TODO:do something with it!
         internal void AutoAddShips()
